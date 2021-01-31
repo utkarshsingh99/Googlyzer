@@ -51,5 +51,6 @@ Finally,
 ### Technologies:
 - React
 - Redux
+- Redux Thunk
 - YouTube API
 - React-Vis
