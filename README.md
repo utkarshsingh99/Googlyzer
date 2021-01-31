@@ -46,3 +46,10 @@ Finally,
 
 > npm start
 
+---
+
+### Technologies:
+- React
+- Redux
+- YouTube API
+- React-Vis
