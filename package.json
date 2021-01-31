@@ -18,6 +18,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
+    "fetch": "node fetch.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
