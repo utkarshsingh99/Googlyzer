@@ -63,14 +63,14 @@ class Homepage extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                         <Card1>
-                            <h1>How much YT do you consume every day?</h1>
+                            <h1>How much YT do you watch every day?</h1>
                             <DurationChart />
                         </Card1>
                     </Grid>
                     <Grid item xs={12}>
                         <Card1>
                             <h1>A Chart of your 10 Most Watched Categories</h1>
-                            {/* <CategoryChart /> */}
+                            <CategoryChart />
                         </Card1>
                     </Grid>
                     <Grid item xs={6}>
