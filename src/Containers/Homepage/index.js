@@ -58,7 +58,6 @@ class Homepage extends React.Component {
                         >
                             <h1>Top 10 Most Watched Channels</h1>
                             <ChannelChart />
-                            <h4 style={{textAlign: 'center', fontWeight: 200, marginTop: 0}}>Number of videos</h4>
                             {/* Start plotting data. Consider naming charts as simply category, tags, channel, etc. and grouping data accordingly (duration, number together) */}
                         </Card1>
                     </Grid>

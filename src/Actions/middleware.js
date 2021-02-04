@@ -5,7 +5,7 @@ import * as moment from 'moment';
 
 const convertToSeconds = (duration) => {
     const newDuration = moment.duration(duration, moment.ISO_8601);
-    return newDuration.asSeconds();
+    return Math.min(1800, newDuration.asSeconds());
 }
 
 export const buildChart1 = () => {
@@ -18,7 +18,7 @@ export const buildChart1 = () => {
         const timeData = data.durations.map(item => {
             const time = new Date(item.time);
             return {
-                duration: Math.min(1800, convertToSeconds(item.duration)),
+                duration: convertToSeconds(item.duration),
                 date: time.toDateString(),
                 month: time.getMonth(),
                 year: time.getFullYear()
@@ -63,7 +63,8 @@ export const buildChart4 = () => {
     return dispatch => {
         const channels = {}
         for(let item of data.durations) {
-            const duration = convertToSeconds(item.duration);
+            // Setting duration in minutes
+            const duration = convertToSeconds(item.duration)/60;
             if (channels[item.snippet.channelTitle] === undefined){
                 channels[item.snippet.channelTitle] = {
                     duration,
