@@ -71,7 +71,7 @@ class Homepage extends React.Component {
                     <Grid item xs={12}>
                         <Card1>
                             <h1>A Chart of your 10 Most Watched Categories</h1>
-                            <CategoryChart />
+                            {/* <CategoryChart /> */}
                         </Card1>
                     </Grid>
                     <Grid item xs={6}>

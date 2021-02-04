@@ -5,6 +5,7 @@
   "homepage": "http://utkarshsingh99.github.io/Googlyzer",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
+    "chart.js": "^2.9.4",
     "d3": "^6.5.0",
     "install": "^0.13.0",
     "lodash": "^4.17.20",

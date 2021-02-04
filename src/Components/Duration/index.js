@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
+import Chart from 'chart.js';
 
 import { buildChart1 } from '../../Actions/middleware';
 import { fetchDataLoading } from '../../Actions';
@@ -19,12 +20,13 @@ const groupBy = function(xs, key) {
   }, {});
 };
 
-
 class DurationChart extends Component {
     constructor(props) {
         super(props);
-        this.renderChart = this.renderChart.bind(this);
+        this.renderChart = this.renderChart.bind(this)
     }
+
+    chartRef = React.createRef();
 
     componentDidMount () {
         this.props.fetchDataLoading(true);
@@ -32,35 +34,80 @@ class DurationChart extends Component {
         this.props.fetchDataLoading(false);
     }
 
-    renderChart() {
-        let data = []
+    componentDidUpdate () {
         const { chartData: { data: rawData } } = this.props;
-        let chartData = groupBy(rawData, 'date')
-        for(let item in chartData) {
-            const itemDate = new Date(item);
-            data.push({x: itemDate, y: parseInt(chartData[item]/60)})
+        
+        
+        this.renderChart(this.chartRef, rawData, 'HOURS');
+        // new Chart(myChartRef, {
+        //     type: "line",
+        //     data: {
+        //         //Bring in data
+        //         labels,
+        //         datasets: [
+        //             {
+        //                 label: "Minutes",
+        //                 data
+        //             }
+        //         ]
+        //     },
+        //     options: {
+        //         //Customize chart options
+        //     }
+        // });
+    }
+
+    renderChart(chartRef, rawData, timeUnit) {
+        console.log('Function called')
+        try {
+
+            const myChartRef = chartRef.current.getContext("2d");
+            const timeUnitNumber = timeUnit === 'MINUTES' ? 60 : 3600;
+            
+            let data = [], labels = [];
+            let chartData = groupBy(rawData, 'date')
+            for(let item in chartData) {
+                const itemDate = new Date(item);
+                labels.push(itemDate.getDate() + ' ' + itemDate.getFullMonth())
+                data.push(parseInt(chartData[item]/timeUnitNumber));
+            }
+            data.reverse();
+            labels.reverse();
+            new Chart(myChartRef, {
+                type: "line",
+                data: {
+                    //Bring in data
+                    labels,
+                    datasets: [
+                        {
+                            label: "Minutes",
+                            data
+                        }
+                    ]
+                },
+                options: {
+                    //Customize chart options
+                }
+            });
+        } catch (e) {
+            console.log('Data not ready')
         }
-        return data;
     }
     
     render() {
-        const chartData = this.renderChart()
         return (
             <>
-                <XYPlot
-                    xType="time"
-                    width={800}
-                    height={300}
-                    margin={{left: 70, right: 10, top: 10, bottom: 40}}
+                <button 
+                    onClick={() => this.renderChart(this.chartRef, this.props.chartData.data, 'MINUTES')}
                 >
-                    <HorizontalGridLines />
-                    <VerticalGridLines />
-                    <XAxis/>
-                    <YAxis title='Minutes'/>
-                    <LineSeries 
-                        animation
-                        data={chartData}/>
-                </XYPlot> 
+                    Minutes
+                </button>
+                <button
+                    onClick={() => this.renderChart(this.chartRef, this.props.chartData.data, 'HOURS')}
+                >
+                    Hours
+                </button>
+                {this.props.chartData.data.length !== 0 ? <canvas id="MyChart" ref={this.chartRef} /> : <p>Loading</p>}
             </>
         )
     }

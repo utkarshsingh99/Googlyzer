@@ -18,7 +18,7 @@ export const buildChart1 = () => {
         const timeData = data.durations.map(item => {
             const time = new Date(item.time);
             return {
-                duration: convertToSeconds(item.duration),
+                duration: Math.min(1800, convertToSeconds(item.duration)),
                 date: time.toDateString(),
                 month: time.getMonth(),
                 year: time.getFullYear()
@@ -74,7 +74,6 @@ export const buildChart4 = () => {
                 channels[item.snippet.channelTitle]['count'] = channels[item.snippet.channelTitle]['count'] ? channels[item.snippet.channelTitle]['count'] + 1 : 1;
             }
         }
-        console.log(channels);
         dispatch(fetchChart4(channels));
     }
 }

@@ -28,3 +28,10 @@ export const initialState = {
         loaded: false
     }
 }
+
+Date.prototype.getFullMonth = function () {
+    const months = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+    return months[this.getMonth()];
+}
