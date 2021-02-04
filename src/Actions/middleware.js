@@ -34,10 +34,7 @@ export const buildChart2 = () => {
     // Y-AXIS: Number of videos
     // X-AXIS: Category
     return dispatch => {
-        const categoryObj = {};
-        for(let item of data.durations) {
-            item.category.forEach(category => categoryObj[category] = categoryObj[category] ? categoryObj[category]+1 : 1)
-        }
+        const categoryObj = getDurationAndCountBy('category');
         dispatch(fetchChart2(categoryObj))    
     };
 }
@@ -47,7 +44,7 @@ export const buildChart3 = () => {
     // Y-AXIS: Duration of videos
     // X-AXIS: Category
     return dispatch => {
-        const categoryObj = {};
+        const categoryObj = {}
         for(let item of data.durations) {
             const duration = convertToSeconds(item.duration);
             item.category.forEach(category => categoryObj[category] = categoryObj[category] ? categoryObj[category]+duration : duration)
@@ -61,20 +58,42 @@ export const buildChart4 = () => {
     // Y-AXIS: Number of videos
     // X-AXIS: Channel
     return dispatch => {
-        const channels = {}
-        for(let item of data.durations) {
-            // Setting duration in minutes
-            const duration = convertToSeconds(item.duration)/60;
-            if (channels[item.snippet.channelTitle] === undefined){
-                channels[item.snippet.channelTitle] = {
-                    duration,
-                    count: 1
-                }
-            } else {
-                channels[item.snippet.channelTitle]['duration'] = channels[item.snippet.channelTitle]['duration'] ? channels[item.snippet.channelTitle]['duration'] + duration : duration;
-                channels[item.snippet.channelTitle]['count'] = channels[item.snippet.channelTitle]['count'] ? channels[item.snippet.channelTitle]['count'] + 1 : 1;
-            }
-        }
+        const channels = getDurationAndCountBy('snippet.channelTitle');
         dispatch(fetchChart4(channels));
     }
+}
+
+function getDurationAndCountBy (factor) {
+    let object = {}, debug = [];
+        for(let item of data.durations) {
+            // Extracting the key value from item object
+            // If factor is category: key = item.category
+            // If factor is snippet.channelTitle: key = item.snippet.channelTitle
+            const key = factor.search(/\./) !== -1 ? item[factor.split(/\./)[0]][factor.split(/\./)[1]] : item[factor];
+
+            // For each item, there is one channelTitle, hence the key will be a string
+            if (typeof key === 'string') {
+                object = AddOrUpdate(object, key, item.duration);
+            } else { // When category factor returns an array of categories for each item
+                for (let eachKey of key) {
+                    object = AddOrUpdate(object, eachKey, item.duration);
+                }
+            } 
+        }
+        return object;
+}
+
+function AddOrUpdate(object, key, itemDuration) {
+    // Setting duration in minutes
+    const duration = convertToSeconds(itemDuration)/60;
+    if (object[key] === undefined){
+        object[key] = {
+            duration,
+            count: 1
+        }
+    } else {
+        object[key]['duration'] = object[key]['duration'] ? object[key]['duration'] + duration : duration;
+        object[key]['count'] = object[key]['count'] ? object[key]['count'] + 1 : 1;
+    }
+    return object;
 }
