@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ButtonGroup, Button } from '@material-ui/core';
-import {XYPlot, LineSeries, HorizontalBarSeries, XAxis, YAxis, Hint } from 'react-vis';
+import {XYPlot, HorizontalBarSeries, XAxis, YAxis } from 'react-vis';
 
 import { fetchDataLoading } from '../../Actions';
 import { buildChart4 } from '../../Actions/middleware';
@@ -36,8 +36,7 @@ class ChannelChart extends Component {
 
     render() {
         const barChartData = this.renderBarChart();
-        const XAxisTitle = this.state.factor === 'COUNT' ? 'Number of Videos' : 'Seconds Watched';
-        console.log(XAxisTitle);
+        const XAxisTitle = this.state.factor === 'COUNT' ? 'Number of Videos' : 'Minutes Watched';
         return (
             <>
                 <ButtonGroup 
@@ -61,7 +60,7 @@ class ChannelChart extends Component {
                     <XAxis title={XAxisTitle} />
                     <YAxis />
                     <HorizontalBarSeries
-                        animation='gentle'
+                        animation='stiff'
                         // cluster="2015"
                         // marginLeft={240}
                         color="#f0f0f0"
