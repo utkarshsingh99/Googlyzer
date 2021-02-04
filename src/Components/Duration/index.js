@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as moment from 'moment';
 import Chart from 'chart.js';
+import { Button, ButtonGroup } from '@material-ui/core';
 
 import { buildChart1 } from '../../Actions/middleware';
 import { fetchDataLoading } from '../../Actions';
-import { LineSeries, VerticalGridLines, HorizontalGridLines, XYPlot, XAxis, YAxis } from 'react-vis';
+
+const timeUnit = (unit) => {
+    switch (unit) {
+        case 'MINUTES': return 60;
+        case 'HOURS': return 3600;
+    }
+}
+
 
 const groupBy = function(xs, key) {
   return xs.reduce(function(rv, x) {
@@ -37,32 +44,14 @@ class DurationChart extends Component {
     componentDidUpdate () {
         const { chartData: { data: rawData } } = this.props;
         
-        
-        this.renderChart(this.chartRef, rawData, 'HOURS');
-        // new Chart(myChartRef, {
-        //     type: "line",
-        //     data: {
-        //         //Bring in data
-        //         labels,
-        //         datasets: [
-        //             {
-        //                 label: "Minutes",
-        //                 data
-        //             }
-        //         ]
-        //     },
-        //     options: {
-        //         //Customize chart options
-        //     }
-        // });
+        this.renderChart(this.chartRef, rawData, 'MINUTES');
     }
 
-    renderChart(chartRef, rawData, timeUnit) {
-        console.log('Function called')
+    renderChart(chartRef, rawData, unit) {
         try {
 
             const myChartRef = chartRef.current.getContext("2d");
-            const timeUnitNumber = timeUnit === 'MINUTES' ? 60 : 3600;
+            const timeUnitNumber = timeUnit(unit);
             
             let data = [], labels = [];
             let chartData = groupBy(rawData, 'date')
@@ -80,7 +69,7 @@ class DurationChart extends Component {
                     labels,
                     datasets: [
                         {
-                            label: "Minutes",
+                            label: unit,
                             data
                         }
                     ]
@@ -97,17 +86,23 @@ class DurationChart extends Component {
     render() {
         return (
             <>
-                <button 
-                    onClick={() => this.renderChart(this.chartRef, this.props.chartData.data, 'MINUTES')}
-                >
-                    Minutes
-                </button>
-                <button
-                    onClick={() => this.renderChart(this.chartRef, this.props.chartData.data, 'HOURS')}
-                >
-                    Hours
-                </button>
-                {this.props.chartData.data.length !== 0 ? <canvas id="MyChart" ref={this.chartRef} /> : <p>Loading</p>}
+                <ButtonGroup 
+                    style={{ display: 'flex', justifyContent: 'center'}} 
+                    size="large"
+                    aria-label="large outlined primary button group">
+                    <Button 
+                        onClick={() => this.renderChart(this.chartRef, this.props.chartData.data, 'MINUTES')}
+                    >
+                        Minutes
+                    </Button>
+                    <Button 
+                        onClick={() => this.renderChart(this.chartRef, this.props.chartData.data, 'HOURS')}
+                    >
+                        Hours
+                    </Button>
+                </ButtonGroup>
+                
+                <canvas id="MyChart" ref={this.chartRef} />
             </>
         )
     }
