@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Radar } from 'react-chartjs-2';
 import { ButtonGroup, Button } from '@material-ui/core';
 
-import { buildChart2, buildChart3 } from '../../Actions/middleware';
+import { buildChart2 } from '../../Actions/middleware';
 import {fetchDataLoading } from '../../Actions';
 
 class CategoryChart extends Component {
@@ -87,8 +87,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         fetchDataLoading,
-        buildChart2,
-        buildChart3,
+        buildChart2
     },
     dispatch
 )

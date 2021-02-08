@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, makeStyles, Typography } from '@material-ui/core';
+import { Card, makeStyles } from '@material-ui/core';
 
 const useStyle = makeStyles(() => ({
     root: {
@@ -12,9 +12,7 @@ const Card1 = ({ onClick: onClickFunction, children }) => {
     const classes = useStyle();
     return (
         <Card onClick={onClickFunction ? () => onClickFunction() : null} className={classes.root}>
-            {/* <CardContent> */}
-                    {children}
-            {/* </CardContent> */}
+            {children}
         </Card>
     )
 }

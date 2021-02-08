@@ -11,6 +11,7 @@ const timeUnit = (unit) => {
     switch (unit) {
         case 'MINUTES': return 60;
         case 'HOURS': return 3600;
+        default: return 1;
     }
 }
 
