@@ -1,4 +1,4 @@
-import {FETCH_DATA_LOADING_SUCCESS, FETCH_DATA_LOADING_FAILURE, FETCH_DATA_LOADING, CHART1_DATA_LOADING_SUCCESS, CHART2_DATA_LOADING_SUCCESS, CHART3_DATA_LOADING_SUCCESS, CHART4_DATA_LOADING_SUCCESS} from '../Constants';
+import {FETCH_DATA_LOADING_SUCCESS, FETCH_DATA_LOADING_FAILURE, FETCH_DATA_LOADING, CHART1_DATA_LOADING_SUCCESS, CHART2_DATA_LOADING_SUCCESS, CHART4_DATA_LOADING_SUCCESS} from '../Constants';
 
 export const fetchDataLoading = (status) => {
     return {
@@ -34,16 +34,6 @@ export const fetchChart1 = (data) => {
 export const fetchChart2 = (data) => {
     return {
         type: CHART2_DATA_LOADING_SUCCESS,
-        payload: {
-            data,
-            loaded: true
-        }
-    }
-}
-
-export const fetchChart3 = (data) => {
-    return {
-        type: CHART3_DATA_LOADING_SUCCESS,
         payload: {
             data,
             loaded: true
