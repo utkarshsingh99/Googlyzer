@@ -3,6 +3,10 @@ import { fetchChart1, fetchChart2, fetchChart4 } from './index';
 
 import * as moment from 'moment';
 
+/**
+ * Converts time in ISO format 8601 to time in seconds
+ * @param {number} duration 
+ */
 const convertToSeconds = (duration) => {
     const newDuration = moment.duration(duration, moment.ISO_8601);
     return Math.min(1800, newDuration.asSeconds());
@@ -45,7 +49,6 @@ export const buildChart2 = () => {
      * Y-AXIS: Duration/Count of videos,
      * X-AXIS: Category
      */
-    
     return dispatch => {
         dispatch(fetchChart2(categoryObj))    
     };
@@ -96,6 +99,12 @@ function getDurationAndCountBy (factor, object, item) {
     return object;
 }
 
+/**
+ * 
+ * @param {object} object 
+ * @param {string} key 
+ * @param {number} itemDuration 
+ */
 function AddOrUpdate(object, key, itemDuration) {
     /* Setting duration in minutes */
     const duration = convertToSeconds(itemDuration)/60;
